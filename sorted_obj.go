@@ -20,17 +20,20 @@ type WithPK[PkType Ordered] interface {
 	PK() PkType
 }
 
+// Len implements a method of the sort.Interface
 func (s SortedObj[PkType, T]) Len() int { return len(s) }
 
+// Swap implements a method of the sort.Interface
 func (s SortedObj[PkType, T]) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
 
+// Less implements a method of the sort.Interface
 func (s SortedObj[PkType, T]) Less(i, j int) bool { return s[i].PK() < s[j].PK() }
 
+// Add introduces a new item in the sorted array, regardless the presence of another item with the same PRIMARY KEY
+// and preserves the ordering of the array.
 func (s *SortedObj[PkType, T]) Add(a T) {
 	*s = append(*s, a)
 	switch nb := len(*s); nb {
-	case 0:
-		panic("yet another attack of a solar eruption")
 	case 1:
 		return
 	case 2:
@@ -44,6 +47,8 @@ func (s *SortedObj[PkType, T]) Add(a T) {
 	}
 }
 
+// Append introduces several items in the sorted array, regardless the presence of other items with the same PRIMARY KEY
+// and preserves the ordering of the array.
 func (s *SortedObj[PkType, T]) Append(a ...T) {
 	*s = append(*s, a...)
 	sort.Sort(s)
@@ -88,15 +93,9 @@ func (s SortedObj[PkType, T]) Get(id PkType) (out T, ok bool) {
 
 func (s SortedObj[PkType, T]) Has(id PkType) bool { return s.GetIndex(id) >= 0 }
 
-// Remove forwards the call to RemovePK with the primary key of the given
-// element. The PK() method must manage the case of a `nil` receiver.
-func (s *SortedObj[PkType, T]) Remove(a T) {
-	s.RemovePK(a.PK())
-}
-
 // RemovePK identifies the position of the element with the given primary key
 // and then removes it and restores the sorting of the set.
-func (s *SortedObj[PkType, T]) RemovePK(pk PkType) {
+func (s *SortedObj[PkType, T]) Remove(pk PkType) {
 	idx := s.GetIndex(pk)
 	if idx >= 0 && idx < len(*s) {
 		if len(*s) == 1 {

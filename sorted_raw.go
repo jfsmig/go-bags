@@ -25,8 +25,6 @@ func (s SortedRaw[T]) Less(i, j int) bool { return s[i] < s[j] }
 func (s *SortedRaw[T]) Add(a T) {
 	*s = append(*s, a)
 	switch nb := len(*s); nb {
-	case 0:
-		panic("yet another attack of a solar eruption")
 	case 1:
 		return
 	case 2:
