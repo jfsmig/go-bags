@@ -6,7 +6,6 @@
 package bags
 
 import (
-	"golang.org/x/exp/constraints"
 	"sort"
 )
 
@@ -15,7 +14,7 @@ import (
 // insertions.
 // SortedRaw proves useful for stable collection which are frequently accessed
 // for paginated listings.
-type SortedRaw[T constraints.Ordered] []T
+type SortedRaw[T Ordered] []T
 
 func (s SortedRaw[T]) Len() int { return len(s) }
 

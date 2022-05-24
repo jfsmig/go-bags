@@ -6,7 +6,6 @@
 package bags
 
 import (
-	"golang.org/x/exp/constraints"
 	"sort"
 )
 
@@ -15,9 +14,9 @@ import (
 // average O(N log N) insertions.
 // SortedObj proves useful for stable collection which are frequently accessed
 // for paginated listings.
-type SortedObj[PkType constraints.Ordered, T WithPK[PkType]] []T
+type SortedObj[PkType Ordered, T WithPK[PkType]] []T
 
-type WithPK[PkType constraints.Ordered] interface {
+type WithPK[PkType Ordered] interface {
 	PK() PkType
 }
 
