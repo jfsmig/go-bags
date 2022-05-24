@@ -44,6 +44,11 @@ func (s *SortedCmp[T]) Add(a T) {
 	}
 }
 
+func (s *SortedCmp[T]) Append(a ...T) {
+	*s = append(*s, a...)
+	sort.Sort(s)
+}
+
 func (s SortedCmp[T]) Slice(marker T, max uint32) []T {
 	if max < minSliceSize {
 		max = minSliceSize

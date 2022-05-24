@@ -44,6 +44,11 @@ func (s *SortedObj[PkType, T]) Add(a T) {
 	}
 }
 
+func (s *SortedObj[PkType, T]) Append(a ...T) {
+	*s = append(*s, a...)
+	sort.Sort(s)
+}
+
 func (s SortedObj[PkType, T]) Slice(marker PkType, max uint32) []T {
 	if max < minSliceSize {
 		max = minSliceSize

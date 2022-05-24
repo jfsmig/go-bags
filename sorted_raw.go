@@ -40,6 +40,11 @@ func (s *SortedRaw[T]) Add(a T) {
 	}
 }
 
+func (s *SortedRaw[T]) Append(a ...T) {
+	*s = append(*s, a...)
+	sort.Sort(s)
+}
+
 func (s SortedRaw[T]) Slice(marker T, max uint32) []T {
 	if max < minSliceSize {
 		max = minSliceSize
