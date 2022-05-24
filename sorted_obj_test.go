@@ -102,19 +102,19 @@ func TestObj_Slice(T *testing.T) {
 	testSlice(bag[0].PK(), 2, bag[1], bag[2])
 	testSlice(bag[0].PK()-1, 2, bag[0], bag[1])
 	testSlice(bag[len(bag)-1].PK(), 1)
-	testSlice(bag[0].PK()-1, minSliceSize-1, bag[:minSliceSize]...)
-	testSlice(bag[0].PK()-1, maxSliceSize+1, bag...)
+	testSlice(bag[0].PK()-1, MinSliceSize-1, bag[:MinSliceSize]...)
+	testSlice(bag[0].PK()-1, MaxSliceSize+1, bag...)
 }
 
 func TestObj_SliceLarge(T *testing.T) {
-	const total = 3 * maxSliceSize
+	const total = 3 * MaxSliceSize
 	var bag SortedObj[int64, *Obj]
 	for i := int64(0); i < total; i++ {
 		bag.Add(&Obj{i})
 	}
 	bag.Assert()
 	slice := bag.Slice(bag[0].PK(), total)
-	if len(slice) < minSliceSize || len(slice) > maxSliceSize {
+	if len(slice) < MinSliceSize || len(slice) > MaxSliceSize {
 		T.Fatal()
 	}
 }
@@ -165,10 +165,10 @@ func (s SortedObj[int64, T]) Assert() {
 // Check validates the ordering and the unicity of the elements in the array
 func (s SortedObj[int64, T]) Check() error {
 	if !sort.IsSorted(s) {
-		return ErrUnsorted
+		return errUnsorted
 	}
 	if !s.areItemsUnique() {
-		return ErrDuplicates
+		return errDuplicates
 	}
 	return nil
 }

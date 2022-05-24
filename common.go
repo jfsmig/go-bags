@@ -10,11 +10,14 @@ import (
 )
 
 const (
-	minSliceSize = 1
-	maxSliceSize = 1000
+	// MinSliceSize is the absolute minimal size of a slice return by the Slice methods.
+	MinSliceSize = 1
+
+	// MaxSliceSize is the absolute upper limit to the number of elements returned by the Slice methods.
+	MaxSliceSize = 1000
 )
 
 var (
-	ErrUnsorted   = errors.New("unsorted")
-	ErrDuplicates = errors.New("duplicates")
+	errUnsorted   = errors.New("unsorted")
+	errDuplicates = errors.New("duplicates")
 )

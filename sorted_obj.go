@@ -55,10 +55,10 @@ func (s *SortedObj[PkType, T]) Append(a ...T) {
 }
 
 func (s SortedObj[PkType, T]) Slice(marker PkType, max uint32) []T {
-	if max < minSliceSize {
-		max = minSliceSize
-	} else if max > maxSliceSize {
-		max = maxSliceSize
+	if max < MinSliceSize {
+		max = MinSliceSize
+	} else if max > MaxSliceSize {
+		max = MaxSliceSize
 	}
 	start := sort.Search(len(s), func(i int) bool {
 		return s[i].PK() > marker
@@ -73,6 +73,8 @@ func (s SortedObj[PkType, T]) Slice(marker PkType, max uint32) []T {
 	return s[start : uint32(start)+remaining]
 }
 
+// GetIndex returns -1 if no item of the array has the given PRIMARY KEY, or the position of the first
+// element with that PRIMARY KEY
 func (s SortedObj[PkType, T]) GetIndex(id PkType) int {
 	i := sort.Search(len(s), func(i int) bool {
 		return s[i].PK() >= id
@@ -93,7 +95,7 @@ func (s SortedObj[PkType, T]) Get(id PkType) (out T, ok bool) {
 
 func (s SortedObj[PkType, T]) Has(id PkType) bool { return s.GetIndex(id) >= 0 }
 
-// RemovePK identifies the position of the element with the given primary key
+// Remove identifies the position of the element with the given PRIMARY KEY
 // and then removes it and restores the sorting of the set.
 func (s *SortedObj[PkType, T]) Remove(pk PkType) {
 	idx := s.GetIndex(pk)

@@ -104,19 +104,19 @@ func TestCmp_Slice(T *testing.T) {
 	testSlice(bag[0], 2, bag[1], bag[2])
 	testSlice(bag[0]-1, 2, bag[0], bag[1])
 	testSlice(bag[len(bag)-1], 1)
-	testSlice(bag[0]-1, minSliceSize-1, bag[:minSliceSize]...)
-	testSlice(bag[0]-1, maxSliceSize+1, bag...)
+	testSlice(bag[0]-1, MinSliceSize-1, bag[:MinSliceSize]...)
+	testSlice(bag[0]-1, MaxSliceSize+1, bag...)
 }
 
 func TestCmp_SliceLarge(T *testing.T) {
-	const total = 3 * maxSliceSize
+	const total = 3 * MaxSliceSize
 	var bag SortedCmp[CmpInt]
 	for i := 0; i < total; i++ {
 		bag.Add(CmpInt(i))
 	}
 	bag.Assert()
 	slice := bag.Slice(bag[0], total)
-	if len(slice) < minSliceSize || len(slice) > maxSliceSize {
+	if len(slice) < MinSliceSize || len(slice) > MaxSliceSize {
 		T.Fatal()
 	}
 }
@@ -179,10 +179,10 @@ func (s SortedCmp[T]) Assert() {
 // Check validates the ordering and the unicity of the elements in the array
 func (s SortedCmp[T]) Check() error {
 	if !sort.IsSorted(s) {
-		return ErrUnsorted
+		return errUnsorted
 	}
 	if !s.areItemsUnique() {
-		return ErrDuplicates
+		return errDuplicates
 	}
 	return nil
 }

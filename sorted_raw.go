@@ -44,10 +44,10 @@ func (s *SortedRaw[T]) Append(a ...T) {
 }
 
 func (s SortedRaw[T]) Slice(marker T, max uint32) []T {
-	if max < minSliceSize {
-		max = minSliceSize
-	} else if max > maxSliceSize {
-		max = maxSliceSize
+	if max < MinSliceSize {
+		max = MinSliceSize
+	} else if max > MaxSliceSize {
+		max = MaxSliceSize
 	}
 	start := sort.Search(len(s), func(i int) bool {
 		return s[i] > marker
@@ -62,6 +62,8 @@ func (s SortedRaw[T]) Slice(marker T, max uint32) []T {
 	return s[start : uint32(start)+remaining]
 }
 
+// GetIndex returns -1 if no item of the array is identical to the given value, or the position
+// of the first element.
 func (s SortedRaw[T]) GetIndex(id T) int {
 	i := sort.Search(len(s), func(i int) bool {
 		return s[i] >= id

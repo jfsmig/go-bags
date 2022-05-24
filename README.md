@@ -6,9 +6,9 @@
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
 Sorted array provide a complexity profile which make it suitable for collection with significantly more lookups that modifying operations:
-* a compact memory footprint
-* an efficient lookup complexity in O(log N)
-* an efficient scan complexity since it depends on the lookup followed by a sequential scan of the array
-* an insertion in O(N * log N) which is rather inefficient but remains acceptable if the operation is rather rare
+*   a compact memory footprint
+*   an efficient lookup complexity in O(log N)
+*   an efficient scan complexity since it depends on the lookup followed by a sequential scan of the array
+*   an insertion in O(N * log N) which is rather inefficient but remains acceptable if the operation is rather rare
 
 3 flavors of generic sorted arrays for efficient lookup and paginated scans.
