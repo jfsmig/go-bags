@@ -12,3 +12,5 @@ Sorted array provide a complexity profile which make it suitable for collection 
 *   an insertion in O(N * log N) which is rather inefficient but remains acceptable if the operation is rather rare
 
 3 flavors of generic sorted arrays for efficient lookup and paginated scans.
+
+The official documentation can be found at [github.com/jfsmig/go-bags](https://pkg.go.dev/github.com/jfsmig/go-bags)
