@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2022 Jean-Francois SMIGIELSKI
+// Copyright (c) 2018-2023 Jean-Francois SMIGIELSKI
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -9,7 +9,7 @@ import (
 	"sort"
 )
 
-// SortedCmp implements a sorted array of objects providing a PRIMARY KEY.
+// SortedCmp implements a sorted array of comparable objects.
 // The sorted storage allows O(log N) lookups, efficient sorted scans but
 // average O(N log N) insertions.
 // SortedCmp proves useful for stable collection which are frequently accessed
@@ -93,6 +93,7 @@ func (s SortedCmp[T]) Get(id T) (out T, ok bool) {
 	return out, false
 }
 
+// Has tests for the presence of an item in the set, given a copy of the item
 func (s SortedCmp[T]) Has(id T) bool { return s.GetIndex(id) >= 0 }
 
 // Remove forwards the call to RemovePK with the primary key of the given

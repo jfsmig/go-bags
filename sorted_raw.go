@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2022 Jean-Francois SMIGIELSKI
+// Copyright (c) 2018-2023 Jean-Francois SMIGIELSKI
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -74,6 +74,8 @@ func (s SortedRaw[T]) GetIndex(id T) int {
 	return -1
 }
 
+// Get tests for the presence of the raw item in the current set and returns
+// a copy of the entity of it is present.
 func (s SortedRaw[T]) Get(id T) (out T, ok bool) {
 	idx := s.GetIndex(id)
 	if idx >= 0 {
@@ -82,6 +84,7 @@ func (s SortedRaw[T]) Get(id T) (out T, ok bool) {
 	return out, false
 }
 
+// Has tests for the presence of the raw item in the current set
 func (s SortedRaw[T]) Has(id T) bool { return s.GetIndex(id) >= 0 }
 
 // Remove identifies the position of the element with the given primary key

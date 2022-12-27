@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2022 Jean-Francois SMIGIELSKI
+// Copyright (c) 2018-2023 Jean-Francois SMIGIELSKI
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -93,6 +93,7 @@ func (s SortedObj[PkType, T]) Get(id PkType) (out T, ok bool) {
 	return out, false
 }
 
+// Has tests for the presence of an item in the set, given the private key of the item
 func (s SortedObj[PkType, T]) Has(id PkType) bool { return s.GetIndex(id) >= 0 }
 
 // Remove identifies the position of the element with the given PRIMARY KEY
