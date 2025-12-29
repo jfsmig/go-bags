@@ -110,3 +110,23 @@ func (s *SortedCmp[T]) Remove(a T) {
 		}
 	}
 }
+
+func (s SortedCmp[T]) SearchGreater(needle T) int {
+	return s.SearchIndex(func(i int) bool {
+		return s[i].Compare(needle) > 0
+	})
+}
+
+func (s SortedCmp[T]) SearchPredicate(predicate func(x *T) bool) int {
+	return s.SearchIndex(func(i int) bool {
+		return predicate(&s[i])
+	})
+}
+
+func (s SortedCmp[T]) SearchIndex(predicate func(i int) bool) int {
+	i := sort.Search(len(s), predicate)
+	if i < len(s) {
+		return i
+	}
+	return -1
+}

@@ -6,6 +6,7 @@
 package bags
 
 import (
+	"cmp"
 	"sort"
 	"testing"
 )
@@ -200,4 +201,48 @@ func (s SortedCmp[T]) areItemsUnique() bool {
 		lastId = a
 	}
 	return true
+}
+
+type Cmp2Int struct {
+	A, B int
+}
+
+func (x Cmp2Int) Compare(o Cmp2Int) int {
+	if x.A == o.A {
+		return cmp.Compare(x.B, o.B)
+	}
+	return cmp.Compare(x.A, o.A)
+}
+
+func TestCmd_SearchItem(T *testing.T) {
+	bag := make(SortedCmp[Cmp2Int], 0)
+	bag.Add(Cmp2Int{1, 1})
+	bag.Add(Cmp2Int{1, 2})
+	bag.Add(Cmp2Int{1, 3})
+	bag.Add(Cmp2Int{3, 1})
+	bag.Add(Cmp2Int{3, 2})
+	bag.Add(Cmp2Int{3, 3})
+
+	if idx := bag.SearchPredicate(func(x *Cmp2Int) bool { return x.A >= 1 }); idx != 0 {
+		T.Fatal("idx", idx, "bag", bag)
+	}
+	if idx := bag.SearchPredicate(func(x *Cmp2Int) bool { return x.A >= 3 }); idx != 3 {
+		T.Fatal("idx", idx, "bag", bag)
+	}
+	if idx := bag.SearchPredicate(func(x *Cmp2Int) bool { return x.A == 3 }); idx != 3 {
+		T.Fatal("idx", idx, "bag", bag)
+	}
+	if idx := bag.SearchPredicate(func(x *Cmp2Int) bool { return x.A == 4 }); idx != -1 {
+		T.Fatal("idx", idx, "bag", bag)
+	}
+
+	if idx := bag.SearchGreater(Cmp2Int{A: 1, B: 0}); idx != 0 {
+		T.Fatal("idx", idx, "bag", bag)
+	}
+	if idx := bag.SearchGreater(Cmp2Int{A: 2, B: 0}); idx != 3 {
+		T.Fatal("idx", idx, "bag", bag)
+	}
+	if idx := bag.SearchGreater(Cmp2Int{A: 3, B: 0}); idx != 3 {
+		T.Fatal("idx", idx, "bag", bag)
+	}
 }

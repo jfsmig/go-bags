@@ -110,3 +110,27 @@ func (s *SortedObj[PkType, T]) Remove(pk PkType) {
 		}
 	}
 }
+
+func (s SortedObj[PkType, T]) SearchItem(predicate func(x *T) bool) int {
+	return s.SearchIndex(func(i int) bool {
+		return predicate(&s[i])
+	})
+}
+
+func (s SortedObj[PkType, T]) SearchIndex(predicate func(i int) bool) int {
+	i := sort.Search(len(s), predicate)
+	if i < len(s) {
+		return i
+	}
+	return -1
+}
+
+func (s SortedObj[PkType, T]) SearchPK(needle PkType) int {
+	i := sort.Search(len(s), func(i int) bool {
+		return s[i].PK() >= needle
+	})
+	if i < len(s) {
+		return i
+	}
+	return -1
+}

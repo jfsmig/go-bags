@@ -101,3 +101,17 @@ func (s *SortedRaw[T]) Remove(a T) {
 		}
 	}
 }
+
+func (s SortedRaw[T]) SearchItem(predicate func(x *T) bool) int {
+	return s.SearchIndex(func(i int) bool {
+		return predicate(&s[i])
+	})
+}
+
+func (s SortedRaw[T]) SearchIndex(predicate func(i int) bool) int {
+	i := sort.Search(len(s), predicate)
+	if i < len(s) {
+		return i
+	}
+	return -1
+}

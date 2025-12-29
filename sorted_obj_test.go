@@ -187,3 +187,37 @@ func (s SortedObj[int64, T]) areItemsUnique() bool {
 	}
 	return true
 }
+
+func (x Cmp2Int) PK() int64 { return int64(x.A) }
+
+func TestObj_SearchItem(T *testing.T) {
+	bag := make(SortedObj[int64, Cmp2Int], 0)
+	bag.Add(Cmp2Int{1, 1})
+	bag.Add(Cmp2Int{1, 2})
+	bag.Add(Cmp2Int{1, 3})
+	bag.Add(Cmp2Int{2, 1})
+	bag.Add(Cmp2Int{2, 2})
+	bag.Add(Cmp2Int{2, 3})
+	if idx := bag.SearchItem(func(x *Cmp2Int) bool { return x.A == 2 }); idx != 3 {
+		T.Fatal()
+	}
+}
+
+func TestObj_SearchPk(T *testing.T) {
+	bag := make(SortedObj[int64, Cmp2Int], 0)
+	bag.Add(Cmp2Int{1, 1})
+	bag.Add(Cmp2Int{1, 2})
+	bag.Add(Cmp2Int{1, 3})
+	bag.Add(Cmp2Int{3, 1})
+	bag.Add(Cmp2Int{3, 2})
+	bag.Add(Cmp2Int{3, 3})
+	if idx := bag.SearchPK(2); idx != 3 {
+		T.Fatal("idx", idx, "bag", bag)
+	}
+	if idx := bag.SearchPK(3); idx != 3 {
+		T.Fatal("idx", idx, "bag", bag)
+	}
+	if idx := bag.SearchPK(4); idx != -1 {
+		T.Fatal("idx", idx, "bag", bag)
+	}
+}
